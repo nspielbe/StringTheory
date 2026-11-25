@@ -220,3 +220,28 @@ textarea { width: 100%; min-height: 70px; padding: 6px 8px; border-radius: 6px; 
   .sheet { position: fixed; right: 0; top: 52px; bottom: 0; z-index: 20; }
   .sheet.collapsed { width: 44px; }
 }
+
+/* plan library */
+.plans-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.chip .count { color: var(--dim); margin-left: 2px; }
+.chip.on .count { color: inherit; opacity: 0.7; }
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.plan-card .paper { aspect-ratio: 10 / 7; background: #fbfaf7; border-radius: 5px; overflow: hidden; }
+.plan-card .paper img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.plan-detail { display: grid; grid-template-columns: 1fr 290px; gap: 16px; height: min(74vh, 780px); }
+.plan-view { position: relative; background: #fbfaf7; border-radius: var(--radius); overflow: hidden; touch-action: none; }
+.plan-view svg { width: 100%; height: 100%; display: block; cursor: grab; user-select: none; }
+.plan-view svg:active { cursor: grabbing; }
+.plan-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6b6255; font-size: 12px; pointer-events: none; }
+.plan-zoom { position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; }
+.plan-side { overflow-y: auto; color: var(--muted); }
+.plan-side p { color: var(--text); }
+.plan-facts { display: grid; grid-template-columns: 70px 1fr; gap: 6px 10px; margin: 12px 0; font-size: 12px; }
+.plan-facts dt { color: var(--dim); }
+.plan-facts dd { margin: 0; color: var(--text); }
+.plan-facts .sub { color: var(--muted); }
+.plan-actions { display: flex; flex-direction: column; gap: 6px; }
+.plan-actions .btn { justify-content: center; }
+.plan-actions a.btn { color: inherit; text-decoration: none; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; font: inherit; }
+.link-btn:hover { text-decoration: underline; }

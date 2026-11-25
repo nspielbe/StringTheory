@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import type { Finish } from '../../types'
 import { useStore } from '../../store'
-import { BODY_TEMPLATES } from '../../data/bodyShapes'
+import { BODY_TEMPLATES, bodyTemplate } from '../../data/bodyShapes'
 import { applyBodyTemplate } from '../../lib/actions'
 import { ColorPick, Row, Section, Seg, Slider, Toggle, WoodPicker } from '../controls'
 import { ShapeThumb } from '../ShapeThumb'
+import { SourceNote } from '../SourceNote'
 import { Icon } from '../icons'
 import { wood } from '../../data/woods'
 
@@ -47,6 +48,7 @@ export function BodyPanel() {
             </button>
           ))}
         </div>
+        <SourceNote source={bodyTemplate(b.shapeId).source} />
         <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
           <button className="btn small" style={{ flex: 1 }} onClick={() => set((x) => applyBodyTemplate(x, b.shapeId, true))} title="Also set the scale, neck joint, headstock, bridge, pickups and controls typical for this style">
             Apply full style defaults

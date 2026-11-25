@@ -111,13 +111,13 @@ export function makeDesign(templateId = 'prs-style', strings: 6 | 7 = 6): Design
       profile: 'C',
       thickness1: 21,
       thickness12: 23,
-      nutWidth: strings === 7 ? 48 : 42.9,
-      taper: strings === 7 ? 14 : 13.5,
+      nutWidth: strings === 7 ? d.nutWidth + 5.1 : d.nutWidth,
+      taper: strings === 7 ? d.taper + 0.5 : d.taper,
       radius: d.construction === 'bolt-on' ? 9.5 : 12,
       radiusEnd: d.construction === 'bolt-on' ? 9.5 : 12,
       angle: d.neckAngle,
       fretWire: 'medium',
-      truss: d.headstock === 'fender-6' ? 'heel' : 'headstock',
+      truss: d.headstock === 'fender-6' || d.headstock === 'tele-6' ? 'heel' : 'headstock',
       nut: 'bone',
       carbonRods: false,
       fretboardWood: isMaple ? 'hard-maple' : 'indian-rosewood',
@@ -256,11 +256,17 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'shred-s',
-    name: 'Metallic super-S',
-    blurb: 'Basswood, metallic paint, HSH, Floyd Rose, sharktooth inlays',
+    name: 'Metallic shred S',
+    blurb: 'S-style basswood, metallic paint, HSH, Floyd Rose, sharktooth inlays',
     make: () =>
-      merge(makeDesign('superstrat'), {
+      merge(makeDesign('s-style'), {
         name: 'Shred Machine',
+        scale: 648,
+        frets: 24,
+        pickupLayout: 'HSH',
+        pickups: slotsFor('HSH', 6, true),
+        hardware: { color: 'black', bridge: 'floyd', bridgeProductId: defaultBridgeProduct('floyd', 6) },
+        electronics: { tones: 1 },
         body: { wood: 'basswood' },
         neck: { fretboardWood: 'ebony', radius: 16, radiusEnd: 16, profile: 'thinD', fretWire: 'jumbo' },
         finish: {
@@ -269,7 +275,6 @@ export const PRESETS: Preset[] = [
         },
         headstock: { faceFinish: 'match-body' },
         inlays: { pattern: 'sharktooth', material: 'mop' },
-        hardware: { color: 'black' },
       }),
   },
   {

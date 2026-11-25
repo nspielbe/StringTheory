@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 2304 2304.0001"
+   width="24in"
+   height="24in"
+   version="1.1"
+   id="svg6670"
+   sodipodi:docname="NECK50SFINAL2D.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6672"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.26110524"
+     inkscape:cx="1212.1549"
+     inkscape:cy="1279.1777"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6668"
+     inkscape:document-units="in" />
+  <desc
+     id="desc6332">NECK50SFINAL2D.DXF - scale = 25.400000, origin = (0.000000, 0.000000), method = file</desc>
+  <defs
+     id="defs6346">
+    <marker
+       id="DistanceX"
+       orient="auto"
+       refX="0"
+       refY="0"
+       style="overflow:visible">
+      <path
+         d="M 3,-3 -3,3 M 0,-5 V 5"
+         style="stroke:#000000;stroke-width:0.5"
+         id="path6334" />
+    </marker>
+    <pattern
+       id="Hatch"
+       patternUnits="userSpaceOnUse"
+       width="8"
+       height="8"
+       x="0"
+       y="0">
+      <path
+         d="M8 4 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6337" />
+      <path
+         d="M6 2 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6339" />
+      <path
+         d="M4 0 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6341" />
+    </pattern>
+    <symbol
+       id="*MODEL_SPACE" />
+    <symbol
+       id="*PAPER_SPACE" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="0"
+     id="g6348" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="green"
+     id="g6536" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="solids"
+     id="g6544" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1"
+     id="g6552" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="cyan"
+     id="g6562" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="fender frets"
+     id="g6630" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="truss rod"
+     id="g6662" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="tool boundries"
+     id="g6668">
+    <g
+       id="g6915"
+       transform="rotate(-135,1065.084,1101.3953)">
+      <path
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         d="m 696.764,1201.71 v -158.4"
+         id="path6350" />
+      <path
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         d="m 685.235,1043.48 v 158.23"
+         id="path6352" />
+      <path
+         d="m 39.217084,1149.6148 a 43.2,43.2 0 0 0 -28.86573,29.2494"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6370" />
+      <path
+         d="m 10.351323,1178.8643 a 79.158624,79.158624 0 0 0 68.515439,100.9161"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6372" />
+      <path
+         d="m 78.866823,1279.7803 a 102.17818,102.17818 0 0 0 8.859365,0.5787"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6374" />
+      <path
+         d="M 87.726123,1280.3591 A 86.4,86.4 0 0 0 141.5242,1263.0414"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6376" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 141.524,1263.04 22.348,-16.8"
+         id="path6378" />
+      <path
+         d="m 2059.3924,1122.5197 a 43.159296,43.159296 0 0 0 11.9151,27.2197"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6390" />
+      <path
+         d="m 2125.3235,1209.1359 a 949.95821,949.95821 0 0 0 -54.0161,-59.3964"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6392" />
+      <path
+         d="m 2125.3236,1209.1358 a 36.3048,36.3048 0 0 0 32.1992,14.343"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6394" />
+      <path
+         d="m 2071.3075,1095.3 a 43.159296,43.159296 0 0 0 -11.9151,27.2197"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6396" />
+      <path
+         d="m 2071.3074,1095.2999 a 949.95821,949.95821 0 0 0 54.0161,-59.3964"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6398" />
+      <path
+         d="m 2157.5228,1021.5606 a 36.3048,36.3048 0 0 0 -32.1992,14.343"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6400" />
+      <path
+         d="m 117.92957,1178.3388 a 16.704001,16.704001 0 0 0 -33.408002,0 16.704001,16.704001 0 0 0 33.408002,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6402" />
+      <path
+         d="m 204.68563,1151.815 a 16.704,16.704 0 0 0 -33.408,0 16.704,16.704 0 0 0 33.408,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6404" />
+      <path
+         d="m 291.4417,1125.2914 a 16.704,16.704 0 0 0 -33.408,0 16.704,16.704 0 0 0 33.408,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6406" />
+      <path
+         d="m 378.19766,1098.7677 a 16.704,16.704 0 0 0 -33.408,0 16.704,16.704 0 0 0 33.408,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6408" />
+      <path
+         d="m 464.95373,1072.2439 a 16.704,16.704 0 0 0 -33.408,0 16.704,16.704 0 0 0 33.408,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6410" />
+      <path
+         d="m 551.70979,1045.7203 a 16.704,16.704 0 0 0 -33.408,0 16.704,16.704 0 0 0 33.408,0 z"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6412" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="M 39.2171,1149.61 578.217,984.824"
+         id="path6414" />
+      <path
+         d="m 221.90136,1239.6571 a 57.6,57.6 0 0 0 -58.02881,6.5839"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6416" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 221.901,1239.66 29.227,13"
+         id="path6418" />
+      <path
+         d="M 609.42644,994.75586 A 28.8,28.8 0 0 0 578.21687,984.8238"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6420" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 609.426,994.756 19.554,25.304"
+         id="path6422" />
+      <path
+         d="m 628.9802,1020.0613 a 60.48,60.48 0 0 0 49.66309,23.4731"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6424" />
+      <path
+         d="m 251.12793,1252.6623 a 184.93344,184.93344 0 0 0 40.77703,12.7438"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6426" />
+      <path
+         d="m 507.14874,1217.6274 a 1264.3169,1264.3169 0 0 0 -55.85018,20.0861"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6428" />
+      <path
+         d="m 617.1979,1200.6295 a 332.20426,332.20426 0 0 0 -110.04918,16.9979"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6430" />
+      <path
+         d="m 451.29856,1237.7135 a 1264.3169,1264.3169 0 0 0 -35.96016,14.5322"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6432" />
+      <path
+         d="m 291.90497,1265.4062 a 214.69037,214.69037 0 0 0 123.43348,-13.1604"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6434" />
+      <path
+         d="m 2200.1912,1133.0803 a 10.56,10.56 0 0 0 10.56,-10.56"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6464" />
+      <path
+         d="m 2210.7512,1122.5203 a 10.56,10.56 0 0 0 -10.56,-10.56"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6466" />
+      <path
+         d="m 895.96406,1111.9603 a 10.56,10.56 0 0 0 -10.56,10.56"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6468" />
+      <path
+         d="m 885.40406,1122.5203 a 10.56,10.56 0 0 0 10.56,10.56"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6470" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="M 2200.19,1111.96 H 895.964"
+         id="path6472" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="M 895.964,1133.08 H 2200.19"
+         id="path6474" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="M 678.643,1043.53 2154.11,1021.61"
+         id="path6476" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="M 2154.11,1223.43 617.198,1200.63"
+         id="path6478" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 2154.11,1021.61 283.26,-4.21"
+         id="path6480" />
+      <path
+         d="m 2461.7272,1041.3998 a 24,24 0 0 0 -24.3565,-23.9974"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6482" />
+      <path
+         d="m 2437.3712,1227.632 a 24,24 0 0 0 24.356,-23.9974"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6484" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 2437.37,1227.63 -283.26,-4.2"
+         id="path6486" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 2461.73,1041.4 v 162.23"
+         id="path6488" />
+      <path
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         d="m 628.98,1020.06 47.684,58.26"
+         id="path6538" />
+      <path
+         d="m 0.25,1122.5197 a 0.25,0.25 0 0 0 -0.5,0 0.25,0.25 0 0 0 0.5,0 z"
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         id="path6540" />
+      <path
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         d="M 2461.73,1122.52 H 0"
+         id="path6542" />
+      <path
+         d="m 656.13285,1139.8374 a 38.34096,38.34096 0 0 0 20.53165,-61.5218"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6546" />
+      <path
+         d="m 656.13276,1139.8375 a 1714.2143,1714.2143 0 0 0 -104.03909,45.5434"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6548" />
+      <path
+         d="m 552.09367,1185.3809 a 1714.2143,1714.2143 0 0 0 -100.79509,52.3326"
+         style="fill:none;stroke:#00ff00;stroke-linecap:round"
+         id="path6550" />
+      <path
+         d="m 2255.3272,1098.5197 a 3.6,3.6 0 0 0 -7.2,0 3.6,3.6 0 0 0 7.2,0 z"
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         id="path6664" />
+      <path
+         d="m 335.32723,1098.5197 a 3.6,3.6 0 0 0 -7.2,0 3.6,3.6 0 0 0 7.2,0 z"
+         style="fill:none;stroke:#000000;stroke-linecap:round"
+         id="path6666" />
+    </g>
+  </g>
+</svg>

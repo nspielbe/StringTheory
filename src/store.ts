@@ -14,7 +14,13 @@ export type Panel =
   | 'graphics'
   | 'info'
 
-export type Modal = null | 'body-editor' | 'head-editor' | 'guard-editor' | 'render' | 'gallery' | 'share' | 'bom' | 'blueprint'
+export type Modal = null | 'body-editor' | 'head-editor' | 'guard-editor' | 'render' | 'gallery' | 'share' | 'bom' | 'blueprint' | 'plans'
+
+/** A plan the next outline editor should open with as its tracing reference. */
+export interface TracePlanRequest {
+  planId: string
+  editor: 'body' | 'head' | 'guard'
+}
 
 interface State {
   design: Design
@@ -29,6 +35,9 @@ interface State {
   viewRequest: { view: string; n: number }
   dirty: boolean
   toast: string | null
+  tracePlan: TracePlanRequest | null
+  /** Plan to show when the plan library opens. */
+  plansOpenId: string | null
 
   set: (fn: (d: Design) => void, opts?: { coalesce?: string }) => void
   replace: (d: Design) => void
@@ -41,6 +50,8 @@ interface State {
   requestView: (view: string) => void
   notify: (msg: string) => void
   markSaved: () => void
+  traceWithPlan: (req: TracePlanRequest | null) => void
+  showPlan: (id: string) => void
 }
 
 let lastCoalesce: { key: string; t: number } | null = null
@@ -58,6 +69,8 @@ export const useStore = create<State>((set, get) => ({
   viewRequest: { view: 'three-quarter', n: 0 },
   dirty: false,
   toast: null,
+  tracePlan: null,
+  plansOpenId: null,
 
   set: (fn, opts) => {
     const cur = get().design
@@ -100,6 +113,9 @@ export const useStore = create<State>((set, get) => ({
     }, 2600)
   },
   markSaved: () => set({ dirty: false }),
+  showPlan: (plansOpenId) => set({ plansOpenId, modal: 'plans' }),
+  traceWithPlan: (tracePlan) =>
+    set({ tracePlan, modal: tracePlan ? (tracePlan.editor === 'body' ? 'body-editor' : tracePlan.editor === 'head' ? 'head-editor' : 'guard-editor') : null }),
 }))
 
 export const useDesign = () => useStore((s) => s.design)
