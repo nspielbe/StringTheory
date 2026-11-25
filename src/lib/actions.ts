@@ -34,6 +34,8 @@ export function applyBodyTemplate(d: Design, id: string, full: boolean) {
   if (full) {
     d.scale = x.scale
     d.frets = x.frets
+    d.neck.nutWidth = d.strings === 7 ? x.nutWidth + 5.1 : x.nutWidth
+    d.neck.taper = d.strings === 7 ? x.taper + 0.5 : x.taper
     d.neck.construction = x.construction
     setHeadstock(d, x.headstock)
     setBridge(d, x.bridge)
@@ -77,8 +79,9 @@ export function setPickupLayout(d: Design, layout: PickupLayout) {
 export function setStrings(d: Design, n: 6 | 7) {
   if (d.strings === n) return
   d.strings = n
-  d.neck.nutWidth = n === 7 ? 48 : 42.9
-  d.neck.taper = n === 7 ? 14 : 13.5
+  const nd = bodyTemplate(d.body.shapeId).defaults
+  d.neck.nutWidth = n === 7 ? nd.nutWidth + 5.1 : nd.nutWidth
+  d.neck.taper = n === 7 ? nd.taper + 0.5 : nd.taper
   for (const s of d.pickups) {
     const ok = pickupsFor(s.type, n).some((p) => p.id === s.productId)
     if (!ok) s.productId = defaultPickup(s.type, s.position, n)

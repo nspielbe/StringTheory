@@ -5,6 +5,7 @@ import { tunersFor } from '../../data/catalog'
 import { setHeadstock, setStrings } from '../../lib/actions'
 import { ColorPick, FileButton, ProductPicker, Row, Section, Seg, Select, Slider, Toggle, WoodPicker } from '../controls'
 import { ShapeThumb } from '../ShapeThumb'
+import { SourceNote } from '../SourceNote'
 import { Icon } from '../icons'
 import { INLAY_LABEL, inlaySwatch } from '../../lib/patterns'
 import { putImage, sampleArt, getLoadedImage } from '../../lib/imageStore'
@@ -154,6 +155,7 @@ export function HeadstockPanel() {
             </button>
           ))}
         </div>
+        <SourceNote source={headstockTemplate(h.shapeId).source} />
       </Section>
       <Section title="Geometry">
         <Row label="Tilt-back angle">

@@ -8,6 +8,7 @@ import { HardwarePanel, PickupsPanel } from './ui/panels/HardwarePanels'
 import { GraphicsPanel } from './ui/panels/GraphicsPanel'
 import { BuildSheet, BomModal } from './ui/BuildSheet'
 import { ShapeEditor } from './ui/ShapeEditor'
+import { PlansModal } from './ui/Plans'
 import { BlueprintModal, Gallery, RenderStudio, ShareModal, thumbnail } from './ui/Modals'
 import { Row, Section } from './ui/controls'
 import { designFromHash, loadDraft, saveDesign, saveDraft } from './lib/persistence'
@@ -89,6 +90,7 @@ function Header() {
       </div>
       <div className="spacer" />
       <div className="hdr-group">
+        <button className="btn" onClick={() => open('plans')} title="Full-size plans and templates"><Icon.ruler /> Plans</button>
         <button className="btn" onClick={() => open('gallery')}><Icon.folder /> Designs</button>
         <button className="btn" onClick={save}><Icon.save /> Save</button>
         <button className="btn" onClick={() => open('share')}><Icon.share /> Share</button>
@@ -211,6 +213,7 @@ export function App() {
       {modal === 'share' && <ShareModal />}
       {modal === 'bom' && <BomModal />}
       {modal === 'blueprint' && <BlueprintModal />}
+      {modal === 'plans' && <PlansModal />}
       {toast && <div className="toast">{toast}</div>}
     </div>
   )

@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 import type { BodyShapeData, HeadstockShapeData, ShapePoint, Vec2 } from '../types'
 import { useStore } from '../store'
-import { BODY_TEMPLATES, PICKGUARD_TEMPLATES, bodyTemplate } from '../data/bodyShapes'
+import { BODY_TEMPLATES, PICKGUARDS, PICKGUARD_TEMPLATES, bodyTemplate } from '../data/bodyShapes'
 import { HEADSTOCK_TEMPLATES, headstockTemplate } from '../data/headstockShapes'
 import { bounds, sampleOutline, spread, toSvgPath } from '../lib/geometry'
 import { fretboardEndY, neckWidthAt, placePickups, resolveBody } from '../lib/layout'
 import { fileToDataUrl } from '../lib/imageStore'
+import { planById, plansForEditor, type Plan } from '../data/plans'
+import { loadPlanImage } from '../lib/plans'
 import { FileButton, Modal, Row, Section, Select, Slider, Toggle } from './controls'
 
 type Kind = 'body' | 'head' | 'guard'
@@ -14,6 +16,23 @@ interface EditState {
   points: ShapePoint[]
   body?: Omit<BodyShapeData, 'points'>
   head?: Omit<HeadstockShapeData, 'points'>
+}
+
+/** Reference picture behind the outline. (ax, ay) is the anchor in image pixels that sits at (x, y) mm and that rotation and scaling pivot on. */
+interface RefImage {
+  url: string
+  w: number
+  h: number
+  mmPerPx: number
+  x: number
+  y: number
+  rot: number
+  opacity: number
+  ax: number
+  ay: number
+  flip: boolean
+  /** Set when the picture is one of the plans (loaded at true scale). */
+  planId?: string
 }
 
 type Handle = { kind: 'pt'; i: number } | { kind: 'knob'; i: number } | { kind: 'switch' } | { kind: 'jack' } | { kind: 'strap'; i: number } | { kind: 'pocket' } | { kind: 'tuner'; line: 'a' | 'b'; end: 0 | 1 }
@@ -54,7 +73,9 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
   const [hist, setHist] = useState<EditState[]>([])
   const [sel, setSel] = useState<number | null>(null)
   const [mirror, setMirror] = useState(kind === 'head')
-  const [ref, setRef] = useState<{ url: string; w: number; h: number; mmPerPx: number; x: number; y: number; rot: number; opacity: number } | null>(null)
+  const [ref, setRef] = useState<RefImage | null>(null)
+  const [moveRef, setMoveRef] = useState(false)
+  const [planErr, setPlanErr] = useState<string | null>(null)
   const [stretch, setStretch] = useState({ w: 100, h: 100 })
   const svgRef = useRef<SVGSVGElement>(null)
 
@@ -82,6 +103,7 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
 
   const drag = useRef<{ h: Handle; mirrorIdx: number | null; startState: EditState; moved: boolean } | null>(null)
   const pan = useRef<{ x: number; y: number; vb: typeof vb } | null>(null)
+  const refDrag = useRef<{ x: number; y: number; rx: number; ry: number } | null>(null)
 
   const startDrag = (h: Handle) => (e: React.PointerEvent) => {
     e.stopPropagation()
@@ -108,6 +130,14 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
   }
 
   const onMove = (e: React.PointerEvent) => {
+    if (refDrag.current) {
+      const svg = svgRef.current!
+      const r = svg.getBoundingClientRect()
+      const k = Math.max(vb.w / r.width, vb.h / r.height)
+      const rd = refDrag.current
+      setRef((f) => f && { ...f, x: Math.round(rd.rx + (e.clientX - rd.x) * k), y: Math.round(rd.ry - (e.clientY - rd.y) * k) })
+      return
+    }
     if (pan.current) {
       const svg = svgRef.current!
       const r = svg.getBoundingClientRect()
@@ -157,6 +187,7 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
     if (dr?.moved) setHist((h) => [...h.slice(-60), dr.startState])
     drag.current = null
     pan.current = null
+    refDrag.current = null
   }
 
   const onWheel = (e: React.WheelEvent) => {
@@ -248,6 +279,31 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
     } else commit({ points: structuredClone(PICKGUARD_TEMPLATES[id]) })
   }
 
+  /** Put a plan behind the outline at true scale, centred on the outline and turned so the neck points up. */
+  const loadPlan = (p: Plan) => {
+    setPlanErr(null)
+    loadPlanImage(p).then(
+      (img) => {
+        const [bx, by, bw, bh] = img.box
+        const [fx, fy, fw, fh] = p.trace?.focus ?? p.box
+        // pickguards are traced on the body, so centre the plan on the body rather than the guard
+        const c = kind === 'guard' ? bounds(resolveBody(useStore.getState().design).outline) : b
+        setRef({ url: img.url, w: bw, h: bh, mmPerPx: p.mmPerUnit, x: 0, y: Math.round((c.minY + c.maxY) / 2), rot: p.trace?.rot ?? 0, opacity: 0.75, ax: fx + fw / 2 - bx, ay: fy + fh / 2 - by, flip: false, planId: p.id })
+      },
+      (e: Error) => setPlanErr(e.message),
+    )
+  }
+
+  // opened from the plan library with "Trace…"
+  useEffect(() => {
+    const req = useStore.getState().tracePlan
+    if (!req) return
+    useStore.setState({ tracePlan: null })
+    const p = planById(req.planId)
+    if (p) loadPlan(p)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const applyStretch = () => {
     const cx = 0
     const cy = kind === 'head' ? 0 : (b.minY + b.maxY) / 2
@@ -279,7 +335,7 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
   const posts = st.head && st.head.tuners.mode !== 'none' ? (st.head.tuners.mode === 'inline' ? spread(st.head.tuners.a[0], st.head.tuners.a[1], d.strings) : [...spread(st.head.tuners.a[0], st.head.tuners.a[1], Math.ceil(d.strings / 2)), ...spread(st.head.tuners.b![0], st.head.tuners.b![1], Math.floor(d.strings / 2))]) : []
 
   const title = kind === 'body' ? 'Body outline' : kind === 'head' ? 'Headstock outline' : 'Pickguard outline'
-  const templates = kind === 'body' ? BODY_TEMPLATES.map((t) => ({ v: t.id, l: t.name })) : kind === 'head' ? HEADSTOCK_TEMPLATES.map((t) => ({ v: t.id, l: t.name })) : Object.keys(PICKGUARD_TEMPLATES).map((k) => ({ v: k, l: k === 's-guard' ? 'S-style guard' : 'T-style guard' }))
+  const templates = kind === 'body' ? BODY_TEMPLATES.map((t) => ({ v: t.id, l: t.name })) : kind === 'head' ? HEADSTOCK_TEMPLATES.map((t) => ({ v: t.id, l: t.name })) : PICKGUARDS.map((p) => ({ v: p.id, l: p.name }))
 
   return (
     <Modal
@@ -307,22 +363,18 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
             onPointerDown={(e) => {
               setSel(null)
               ;(e.target as Element).setPointerCapture(e.pointerId)
-              pan.current = { x: e.clientX, y: e.clientY, vb }
+              if (moveRef && ref) refDrag.current = { x: e.clientX, y: e.clientY, rx: ref.x, ry: ref.y }
+              else pan.current = { x: e.clientX, y: e.clientY, vb }
             }}
-            style={{ cursor: pan.current ? 'grabbing' : 'default' }}
+            style={{ cursor: moveRef && ref ? 'move' : pan.current ? 'grabbing' : 'default' }}
           >
             {grid}
             {ref && (
-              <image
-                href={ref.url}
-                x={ref.x - (ref.w * ref.mmPerPx) / 2}
-                y={-ref.y - (ref.h * ref.mmPerPx) / 2}
-                width={ref.w * ref.mmPerPx}
-                height={ref.h * ref.mmPerPx}
-                opacity={ref.opacity}
-                transform={`rotate(${ref.rot} ${ref.x} ${-ref.y})`}
-                style={{ pointerEvents: 'none' }}
-              />
+              <g opacity={ref.opacity} transform={`rotate(${ref.rot} ${ref.x} ${-ref.y})${ref.flip ? ` translate(${2 * ref.x} 0) scale(-1 1)` : ''}`} style={{ pointerEvents: 'none' }}>
+                {/* plans are dark line drawings on a transparent page: back them with paper so they show on the dark canvas */}
+                {ref.planId && <rect x={ref.x - ref.ax * ref.mmPerPx} y={-ref.y - ref.ay * ref.mmPerPx} width={ref.w * ref.mmPerPx} height={ref.h * ref.mmPerPx} fill="#f4f1ea" />}
+                <image href={ref.url} x={ref.x - ref.ax * ref.mmPerPx} y={-ref.y - ref.ay * ref.mmPerPx} width={ref.w * ref.mmPerPx} height={ref.h * ref.mmPerPx} preserveAspectRatio="none" />
+              </g>
             )}
             {kind === 'guard' && <path d={toSvgPath(body.outline)} fill="#2a231d" stroke="#5a4c3c" strokeWidth={r} />}
             {kind !== 'head' && (
@@ -409,40 +461,65 @@ export function ShapeEditor({ kind }: { kind: Kind }) {
             <button className="btn small" onClick={applyStretch} disabled={stretch.w === 100 && stretch.h === 100}>Apply stretch</button>
           </Section>
           <Section title="Trace a picture">
+            <Row label="Your plans" full>
+              <Select
+                value={ref?.planId ?? ''}
+                options={[{ v: '', l: 'Trace over one of the plans…' }, ...plansForEditor(kind).map((p) => ({ v: p.id, l: p.title }))]}
+                onChange={(v) => {
+                  const p = v ? planById(v) : undefined
+                  if (p) loadPlan(p)
+                }}
+              />
+            </Row>
             <FileButton
               onFile={async (f) => {
                 const url = await fileToDataUrl(f)
                 const img = new Image()
                 img.onload = () => {
                   const target = kind === 'head' ? 200 : 420
-                  setRef({ url, w: img.naturalWidth, h: img.naturalHeight, mmPerPx: target / img.naturalHeight, x: 0, y: kind === 'head' ? 100 : (b.minY + b.maxY) / 2, rot: 0, opacity: 0.5 })
+                  setRef({ url, w: img.naturalWidth, h: img.naturalHeight, mmPerPx: target / img.naturalHeight, x: 0, y: kind === 'head' ? 100 : (b.minY + b.maxY) / 2, rot: 0, opacity: 0.5, ax: img.naturalWidth / 2, ay: img.naturalHeight / 2, flip: false })
                 }
                 img.src = url
               }}
             >
-              Load reference image…
+              Or load your own image…
             </FileButton>
-            {ref && (
-              <>
-                <Row label="Opacity">
-                  <Slider value={ref.opacity} min={0.05} max={1} step={0.05} onChange={(v) => setRef({ ...ref, opacity: v })} />
-                </Row>
-                <Row label="Height (mm)">
-                  <Slider value={Math.round(ref.h * ref.mmPerPx)} min={40} max={900} step={1} onChange={(v) => setRef({ ...ref, mmPerPx: v / ref.h })} />
-                </Row>
-                <Row label="Move X">
-                  <Slider value={ref.x} min={-300} max={300} step={1} onChange={(v) => setRef({ ...ref, x: v })} />
-                </Row>
-                <Row label="Move Y">
-                  <Slider value={ref.y} min={-300} max={500} step={1} onChange={(v) => setRef({ ...ref, y: v })} />
-                </Row>
-                <Row label="Rotate">
-                  <Slider value={ref.rot} min={-180} max={180} step={0.5} onChange={(v) => setRef({ ...ref, rot: v })} />
-                </Row>
-                <button className="btn small" onClick={() => setRef(null)}>Remove reference</button>
-              </>
-            )}
-            <p className="hint">Use a straight-on photo or drawing; set its real height so the outline comes out at true size.</p>
+            {planErr && <p className="hint warn">{planErr}</p>}
+            {ref && (() => {
+              const plan = ref.planId ? planById(ref.planId) : undefined
+              const trueSize = plan && Math.abs(ref.mmPerPx - plan.mmPerUnit) < 1e-9
+              const hMm = Math.round(ref.h * ref.mmPerPx)
+              return (
+                <>
+                  <Row label="Opacity">
+                    <Slider value={ref.opacity} min={0.05} max={1} step={0.05} onChange={(v) => setRef({ ...ref, opacity: v })} />
+                  </Row>
+                  <Row label="Height (mm)">
+                    <Slider value={hMm} min={40} max={Math.max(900, Math.ceil(hMm * 1.5))} step={1} onChange={(v) => setRef({ ...ref, mmPerPx: v / ref.h })} />
+                  </Row>
+                  <Row label="Move X">
+                    <Slider value={ref.x} min={-600} max={600} step={1} onChange={(v) => setRef({ ...ref, x: v })} />
+                  </Row>
+                  <Row label="Move Y">
+                    <Slider value={ref.y} min={-600} max={900} step={1} onChange={(v) => setRef({ ...ref, y: v })} />
+                  </Row>
+                  <Row label="Rotate">
+                    <Slider value={ref.rot} min={-180} max={180} step={0.5} onChange={(v) => setRef({ ...ref, rot: v })} />
+                  </Row>
+                  <Row label="Mirror">
+                    <Toggle checked={ref.flip} onChange={(v) => setRef({ ...ref, flip: v })} />
+                  </Row>
+                  <Row label="Drag picture">
+                    <Toggle checked={moveRef} onChange={setMoveRef} />
+                  </Row>
+                  {plan && (trueSize ? <p className="hint">Plan is at true size (1:1).</p> : (
+                    <button className="btn small" onClick={() => setRef({ ...ref, mmPerPx: plan.mmPerUnit })}>Back to true size</button>
+                  ))}
+                  <button className="btn small" onClick={() => setRef(null)}>Remove reference</button>
+                </>
+              )
+            })()}
+            <p className="hint">Plans load at their real size. For your own photo or drawing, shoot it straight on and set its real height so the outline comes out at true size. Turn on "Drag picture" to line it up with the mouse.</p>
           </Section>
           {sel !== null && st.points[sel] && (
             <Section title={`Point ${sel + 1}`}>
